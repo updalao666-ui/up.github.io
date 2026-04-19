@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UP | B端产品经理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0a84ff',
+                        dark: {
+                            900: '#000000',
+                            800: '#1c1c1e',
+                            700: '#2c2c2e',
+                            600: '#3a3a3c',
+                            500: '#48484a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Helvetica Neue', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background: #000000;
+            color: #f5f5f7;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #0a84ff 0%, #5e5ce6 50%, #bf5af2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-card {
+            background: rgba(28, 28, 30, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(ellipse at top center, rgba(10, 132, 255, 0.15) 0%, transparent 60%),
+                        radial-gradient(ellipse at bottom right, rgba(191, 90, 242, 0.1) 0%, transparent 50%);
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(10, 132, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(10, 132, 255, 0.1);
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 7px;
+            top: 24px;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #0a84ff, #bf5af2);
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0a84ff, #5e5ce6);
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .skill-bar {
+            background: linear-gradient(90deg, #0a84ff 0%, #5e5ce6 50%, #bf5af2 100%);
+            height: 4px;
+            border-radius: 2px;
+            transition: width 1s ease-out;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+
+        .avatar-glow {
+            box-shadow: 0 0 60px rgba(10, 132, 255, 0.3), 0 0 120px rgba(191, 90, 242, 0.2);
+        }
+
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.15);
+            color: #0a84ff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1c1c1e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #48484a;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #636366;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, #0a84ff, #bf5af2);
+            margin-top: 12px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-card">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="text-xl font-semibold gradient-text">UP</div>
+            <div class="hidden md:flex items-center gap-8 text-sm text-gray-400">
+                <a href="#about" class="hover:text-white transition-colors">关于我</a>
+                <a href="#experience" class="hover:text-white transition-colors">工作经历</a>
+                <a href="#projects" class="hover:text-white transition-colors">项目经历</a>
+                <a href="#skills" class="hover:text-white transition-colors">技能</a>
+                <a href="#contact" class="hover:text-white transition-colors">联系</a>
+            </div>
+            <button id="mobileMenuBtn" class="md:hidden text-gray-400 hover:text-white">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden px-6 pb-4">
+            <div class="flex flex-col gap-4 text-sm text-gray-400">
+                <a href="#about" class="hover:text-white transition-colors py-2">关于我</a>
+                <a href="#experience" class="hover:text-white transition-colors py-2">工作经历</a>
+                <a href="#projects" class="hover:text-white transition-colors py-2">项目经历</a>
+                <a href="#skills" class="hover:text-white transition-colors py-2">技能</a>
+                <a href="#contact" class="hover:text-white transition-colors py-2">联系</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen hero-gradient flex items-center justify-center pt-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="fade-in stagger-1 mb-8">
+                <div class="relative inline-block">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=up&backgroundColor=0a84ff"
+                         alt="Avatar"
+                         class="w-32 h-32 md:w-40 md:h-40 rounded-full avatar-glow mx-auto object-cover bg-dark-700">
+                    <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full glass-card text-xs text-primary font-medium">
+                        <i class="fas fa-circle text-[8px] mr-2 text-green-500"></i>开放合作
+                    </div>
+                </div>
+            </div>
+            
+            <h1 class="fade-in stagger-2 text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
+                <span class="gradient-text">B端产品经理</span>
+            </h1>
+            
+            <p class="fade-in stagger-3 text-lg md:text-xl text-gray-400 mb-4 max-w-2xl mx-auto leading-relaxed">
+                深耕房产金融行业近10年 · 产品总监
+            </p>
+            
+            <p class="fade-in stagger-4 text-base text-gray-500 mb-10 max-w-3xl mx-auto leading-relaxed">
+                从公司初创期加入，伴随企业从金融服务向科技公司的战略转型<br class="hidden md:block">
+                主导多个从零到一的B端项目，打造多款SaaS产品，创造近千万元系统服务费收入
+            </p>
+
+            <div class="fade-in stagger-5 flex items-center justify-center gap-6 mb-12">
+                <a href="https://weixin.qq.com/pupuupup" target="_blank" 
+                   class="social-icon w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-primary">
+                    <i class="fab fa-weixin text-xl"></i>
+                </a>
+                <a href="#" target="_blank" 
+                   class="social-icon w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-primary">
+                    <i class="fas fa-video text-lg"></i>
+                </a>
+                <a href="#" target="_blank" 
+                   class="social-icon w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-primary">
+                    <i class="fab fa-linkedin-in text-lg"></i>
+                </a>
+                <a href="#" target="_blank" 
+                   class="social-icon w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-primary">
+                    <i class="fab fa-github text-lg"></i>
+                </a>
+            </div>
+
+            <div class="fade-in stagger-5 animate-bounce mt-8">
+                <a href="#about" class="text-gray-500 hover:text-primary transition-colors">
+                    <i class="fas fa-chevron-down text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 section-title fade-in">关于我</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 mt-12">
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-1">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                            <i class="fas fa-user-tie text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">职业定位</h3>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed">
+                        前10年在一家房产金融公司做产品，公司初创期加入一步步成为<strong class="text-white">产品总监</strong>，
+                        负责信息系统部产品和项目团队管理。现在互联网媒体公司，负责内部软件产品。
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                            <i class="fas fa-lightbulb text-purple-400"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">核心优势</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-green-500 mt-1 text-sm"></i>
+                            <span>9年产品设计实战经验 + 4年团队管理能力</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-green-500 mt-1 text-sm"></i>
+                            <span>主导多个从零到一的B端系统搭建（信贷、CRM、SaaS）</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check text-green-500 mt-1 text-sm"></i>
+                            <span>精通信贷、抵押贷全流程与房产交易环节</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="mt-8 glass-card rounded-3xl p-8 card-hover fade-in stagger-3">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-indigo-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold">教育背景</h3>
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center gap-4">
+                    <div class="flex items-center gap-4">
+                        <img src="https://ui-avatars.com/api/?name=SWUFE&background=1c1c1e&color=f5f5f7&size=56&rounded=true&bold=true"
+                             alt="University" class="w-14 h-14 rounded-2xl">
+                        <div>
+                            <h4 class="font-semibold text-lg">西南财经大学</h4>
+                            <p class="text-gray-500">国际商务双语专业</p>
+                        </div>
+                    </div>
+                    <div class="md:ml-auto text-right">
+                        <span class="inline-flex items-center px-4 py-2 rounded-full bg-dark-600 text-sm text-gray-400">
+                            <i class="far fa-calendar-alt mr-2"></i>2011.09 — 2015.06
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-24 px-6 bg-dark-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 section-title fade-in">工作经历</h2>
+            
+            <div class="mt-12 space-y-8">
+                <!-- Experience 1 -->
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-1 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl"></div>
+                    
+                    <div class="relative">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/20">
+                                    <i class="fas fa-building text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">深圳大道云科技有限公司</h3>
+                                    <p class="text-primary font-medium mt-1">信息科技部 · 产品总监</p>
+                                    <p class="text-gray-500 text-sm mt-1">2021.04 — 2025.03 (4年)</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium self-start">
+                                <i class="fas fa-crown mr-1.5"></i>管理岗
+                            </span>
+                        </div>
+
+                        <div class="bg-dark-900/50 rounded-2xl p-6 space-y-4">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-users text-primary mt-1 text-sm"></i>
+                                <div>
+                                    <strong class="text-white">团队管理</strong>
+                                    <p class="text-gray-400 text-sm mt-1">
+                                        统筹科技产品、设计及项目团队日常运营，最多管理<span class="text-primary">4名产品经理、2名设计师及1名项目经理</span>，
+                                        建立高效协作机制，提升团队整体产出效率。
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-rocket text-purple-400 mt-1 text-sm"></i>
+                                <div>
+                                    <strong class="text-white">战略落地</strong>
+                                    <p class="text-gray-400 text-sm mt-1">
+                                        牵头制定科技产品架构与发展规划，推动信贷核心系统重构与中台服务搭建，
+                                        完成SaaS化及平台化产品转型，快速推出AI审批、电子签约等多款SaaS产品，
+                                        为公司带来<span class="text-green-400">近千万元系统服务费</span>。
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-life-ring text-indigo-400 mt-1 text-sm"></i>
+                                <div>
+                                    <strong class="text-white">产品全生命周期管理</strong>
+                                    <p class="text-gray-400 text-sm mt-1">
+                                        负责CRM系统、蜂鸟周转系统（赎楼SaaS）及中台服务的产品规划、设计与迭代跟进。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience 2 -->
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-2 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-indigo-500/5 to-transparent rounded-full blur-3xl"></div>
+                    
+                    <div class="relative">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/20">
+                                    <i class="fas fa-laptop-code text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">深圳大道云科技有限公司</h3>
+                                    <p class="text-indigo-400 font-medium mt-1">信息科技部 · 产品经理</p>
+                                    <p class="text-gray-500 text-sm mt-1">2016.06 — 2021.04 (5年)</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-medium self-start">
+                                <i class="fas fa-code mr-1.5"></i>执行岗
+                            </span>
+                        </div>
+
+                        <div class="bg-dark-900/50 rounded-2xl p-6">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-cogs text-indigo-400 mt-1 text-sm"></i>
+                                <div>
+                                    <strong class="text-white">核心业务系统迭代</strong>
+                                    <p class="text-gray-400 text-sm mt-1">
+                                        负责公司核心业务系统的日常迭代，统筹每月需求规划、产品设计、上线前培训及上线后效果跟踪，
+                                        最高月放款额突破<span class="text-primary">100亿</span>；借助规则引擎实现<span class="text-primary">70%</span>业务自动化审批；
+                                        系统bug率从<span class="text-red-400">3%降至0.8%</span>。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience 3 -->
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-3 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-full blur-3xl"></div>
+                    
+                    <div class="relative">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                            <div class="flex items-start gap-4">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/20">
+                                    <i class="fas fa-seedling text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">深圳大道云科技有限公司</h3>
+                                    <p class="text-emerald-400 font-medium mt-1">管理培训生</p>
+                                    <p class="text-gray-500 text-sm mt-1">2015.07 — 2016.06 (1年)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-dark-900/50 rounded-2xl p-6 mt-6">
+                            <p class="text-gray-400 text-sm">
+                                各部门及分公司轮岗实习，熟悉公司业务及运作流程。参与公司组织的集体培训，完成上级交代的各项任务。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 section-title fade-in">项目经历</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6 mt-12">
+                <!-- Project 1 -->
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-1 group">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                            <i class="fas fa-bolt text-white text-lg"></i>
+                        </div>
+                        <span class="text-xs text-gray-500">2023.03 — 2025.03</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">蜂鸟周转系统</h3>
+                    <p class="text-primary/80 text-sm font-medium mb-4">赎楼 SaaS 系统 | 从0到1</p>
+                    
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        主导产品从0到1的设计与落地，负责需求调研、架构规划、功能设计、推广运营及迭代优化全流程。
+                    </p>
+
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-start gap-2 text-sm">
+                            <i class="fas fa-arrow-right text-primary mt-1 text-xs"></i>
+                            <span class="text-gray-300">2023年7月完成PC端与小程序端第一版上线</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-sm">
+                            <i class="fas fa-arrow-right text-primary mt-1 text-xs"></i>
+                            <span class="text-gray-300">累计服务近 <strong class="text-white">200家</strong> 客户</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-sm">
+                            <i class="fas fa-arrow-right text-primary mt-1 text-xs"></i>
+                            <span class="text-gray-300">新增AI审批、线上合同、线上公证等增值服务</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">SaaS</span>
+                        <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">赎楼</span>
+                        <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">小程序</span>
+                        <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">PC端</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-2 group">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                            <i class="fas fa-layer-group text-white text-lg"></i>
+                        </div>
+                        <span class="text-xs text-gray-500">2021.11 — 2025.03</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">系统重构 & 中台化</h3>
+                    <p class="text-purple-400/80 text-sm font-medium mb-4">业务系统重构及中台服务搭建</p>
+                    
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        牵头系统重构与中台搭建项目，解决模块耦合度高、复用性差的问题，提升研发效率、降低成本。
+                    </p>
+
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-start gap-2 text-sm">
+                            <i class="fas fa-arrow-right text-purple-400 mt-1 text-xs"></i>
+                            <span class="text-gray-300">Bug率从 <span class="text-red-400">3%</span> 降至 <span class="text-green-400">0.8%</span></span>
+                        </div>
+                        <div class="flex items-start gap-2 text-sm">
+                            <i class="fas fa-arrow-right text-purple-400 mt-1 text-xs"></i>
+                            <span class="text-gray-300">沉淀出用户、角色权限、支付、合同等<strong class="text-white">多套中台服务</strong></span>
+                        </div>
+                        <div class="flex items-start gap-2 text-sm">
+                            <i class="fas fa-arrow-right text-purple-400 mt-1 text-xs"></i>
+                            <span class="text-gray-300">为后续快速研发多款SaaS产品奠定坚实基础</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">架构重构</span>
+                        <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">中台服务</span>
+                        <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">模块解耦</span>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-3 group md:col-span-2">
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="md:col-span-2">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                                    <i class="fas fa-users-cog text-white text-lg"></i>
+                                </div>
+                                <span class="text-xs text-gray-500">2023.08 — 2025.03</span>
+                            </div>
+                            
+                            <h3 class="text-xl font-bold mb-2 group-hover:text-orange-400 transition-colors">内部 CRM 系统</h3>
+                            <p class="text-orange-400/80 text-sm font-medium mb-4">客户关系管理系统 | 从0到1</p>
+                            
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                                负责CRM系统从需求调研到落地运营的全流程管理，对标行业成熟CRM产品，明确功能需求并完成系统架构设计与迭代规划。
+                            </p>
+
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="bg-dark-900/50 rounded-xl p-4">
+                                    <div class="text-2xl font-bold gradient-text">10000+</div>
+                                    <div class="text-xs text-gray-500 mt-1">沉淀客户资源</div>
+                                </div>
+                                <div class="bg-dark-900/50 rounded-xl p-4">
+                                    <div class="text-2xl font-bold text-green-400">↑ 提升</div>
+                                    <div class="text-xs text-gray-500 mt-1">销售效率显著增长</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col justify-end">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">CRM</span>
+                                <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">销售管理</span>
+                                <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">客户开发</span>
+                                <span class="px-3 py-1 rounded-full bg-dark-600 text-xs text-gray-300">交付管理</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-4 group md:col-span-2">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-teal-500/20">
+                            <i class="fas fa-server text-white text-lg"></i>
+                        </div>
+                        <span class="text-xs text-gray-500">2016.05 — 2021.04</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-2 group-hover:text-teal-400 transition-colors">公司核心业务系统</h3>
+                    <p class="text-teal-400/80 text-sm font-medium mb-4">从0到1搭建 · 信贷全流程管理系统</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                参与核心业务系统从0到1的搭建与迭代，深入南京、深圳、郑州三家分公司开展调研，
+                                彻底替代手工台账，实现审查流程线上化审批。
+                            </p>
+                            <div class="space-y-2">
+                                <div class="flex items-start gap-2 text-sm">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 text-xs"></i>
+                                    <span class="text-gray-300">接入多家银行、信托、小贷及保险公司</span>
+                                </div>
+                                <div class="flex items-start gap-2 text-sm">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 text-xs"></i>
+                                    <span class="text-gray-300">对接企查查、同盾等第三方数据机构</span>
+                                </div>
+                                <div class="flex items-start gap-2 text-sm">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 text-xs"></i>
+                                    <span class="text-gray-300">联动法大大、通联平台实现线上签约缴费</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-dark-900/50 rounded-xl p-4 text-center">
+                                <div class="text-2xl font-bold text-teal-400">100亿+</div>
+                                <div class="text-xs text-gray-500 mt-1">最高月放款额</div>
+                            </div>
+                            <div class="bg-dark-900/50 rounded-xl p-4 text-center">
+                                <div class="text-2xl font-bold text-primary">70%</div>
+                                <div class="text-xs text-gray-500 mt-1">自动化审批率</div>
+                            </div>
+                            <div class="bg-dark-900/50 rounded-xl p-4 text-center col-span-2">
+                                <div class="text-lg font-bold text-white">2016.11</div>
+                                <div class="text-xs text-gray-500 mt-1">系统正式上线</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 px-6 bg-dark-800/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 section-title fade-in">技能专长</h2>
+            
+            <div class="grid md:grid-cols-3 gap-6 mt-12">
+                <!-- Skill Card 1 -->
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-1">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6">
+                        <i class="fas fa-pen-ruler text-blue-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-4">产品设计工具</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">Axure / Figma</span>
+                                <span class="text-primary">95%</span>
+                            </div>
+                            <div class="bg-dark-600 rounded-full h-1.5 overflow-hidden">
+                                <div class="skill-bar" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">Visio / Xmind</span>
+                                <span class="text-primary">92%</span>
+                            </div>
+                            <div class="bg-dark-600 rounded-full h-1.5 overflow-hidden">
+                                <div class="skill-bar" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">Office 办公软件</span>
+                                <span class="text-primary">98%</span>
+                            </div>
+                            <div class="bg-dark-600 rounded-full h-1.5 overflow-hidden">
+                                <div class="skill-bar" style="width: 98%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill Card 2 -->
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-2">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-purple-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-4">数据分析</h3>
+                    <div class="space-y-4">
+                        <div class="bg-dark-900/50 rounded-xl p-4">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i class="fas fa-certificate text-yellow-500"></i>
+                                <span class="font-medium text-white">帆软认证资深BI工程师</span>
+                            </div>
+                            <span class="text-xs text-gray-500">(FCBP)</span>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">FineReport / FineBI</span>
+                                <span class="text-purple-400">90%</span>
+                            </div>
+                            <div class="bg-dark-600 rounded-full h-1.5 overflow-hidden">
+                                <div class="skill-bar" style="width: 90%; background: linear-gradient(90deg, #a855f7, #ec4899);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill Card 3 -->
+                <div class="glass-card rounded-3xl p-8 card-hover fade-in stagger-3">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6">
+                        <i class="fas fa-award text-emerald-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-4">资质证书</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 bg-dark-900/50 rounded-xl p-3">
+                            <i class="fas fa-language text-blue-400"></i>
+                            <span class="text-sm text-gray-300">CET 六级</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-dark-900/50 rounded-xl p-3">
+                            <i class="fas fa-file-contract text-emerald-400"></i>
+                            <span class="text-sm text-gray-300">证券从业一级证书</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-dark-600">
+                        <div class="text-xs text-gray-500 mb-2">语言能力</div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-dark-600 text-xs text-gray-300">中文 · 母语</span>
+                            <span class="px-2.5 py-1 rounded-md bg-dark-600 text-xs text-gray-300">English · CET-6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Competencies -->
+            <div class="mt-12 glass-card rounded-3xl p-8 card-hover fade-in stagger-4">
+                <h3 class="text-lg font-semibold mb-6 flex items-center gap-3">
+                    <i class="fas fa-star text-yellow-500"></i>
+                    核心竞争力
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center p-4">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-sitemap text-blue-400 text-2xl"></i>
+                        </div>
+                        <p class="text-sm font-medium">B端产品设计</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-project-diagram text-purple-400 text-2xl"></i>
+                        </div>
+                        <p class="text-sm font-medium">团队管理与协作</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-lightbulb text-emerald-400 text-2xl"></i>
+                        </div>
+                        <p class="text-sm font-medium">商业思维与创新</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500/20 to-orange-600/20 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-brain text-orange-400 text-2xl"></i>
+                        </div>
+                        <p class="text-sm font-medium">逻辑思维与学习力</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 section-title fade-in inline-block">联系我</h2>
+            <p class="text-gray-400 mt-8 max-w-xl mx-auto fade-in stagger-1">
+                如果您对我的经历感兴趣，或者有任何合作机会，欢迎随时与我联系
+            </p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 fade-in stagger-2">
+                <a href="https://weixin.qq.com/pupuupup" target="_blank" 
+                   class="glass-card rounded-2xl p-6 card-hover group block">
+                    <i class="fab fa-weixin text-3xl text-green-500 mb-3 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-sm font-medium">微信</p>
+                    <p class="text-xs text-gray-500 mt-1">pupuupup</p>
+                </a>
+                
+                <a href="#" target="_blank" 
+                   class="glass-card rounded-2xl p-6 card-hover group block">
+                    <i class="fas fa-video text-3xl text-red-500 mb-3 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-sm font-medium">视频号</p>
+                    <p class="text-xs text-gray-500 mt-1">pupuupup</p>
+                </a>
+                
+                <a href="#" target="_blank" 
+                   class="glass-card rounded-2xl p-6 card-hover group block">
+                    <i class="fab fa-linkedin-in text-3xl text-blue-500 mb-3 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-sm font-medium">LinkedIn</p>
+                    <p class="text-xs text-gray-500 mt-1">查看主页</p>
+                </a>
+                
+                <a href="mailto:" target="_blank" 
+                   class="glass-card rounded-2xl p-6 card-hover group block">
+                    <i class="fas fa-envelope text-3xl text-primary mb-3 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-sm font-medium">Email</p>
+                    <p class="text-xs text-gray-500 mt-1">发送邮件</p>
+                </a>
+            </div>
+
+            <div class="mt-16 pt-8 border-t border-dark-700 fade-in stagger-3">
+                <p class="text-gray-600 text-sm">
+                    © 2025 UP · B端产品经理 · 用心做产品
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" 
+            class="fixed bottom-8 right-8 w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-primary opacity-0 invisible transition-all duration-300 z-50">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Back to top button
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+                backToTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+                backToTopBtn.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(0, 0, 0, 0.9)';
+            } else {
+                nav.style.background = 'rgba(28, 28, 30, 0.8)';
+            }
+        });
+    </script>
+</body>
+</html>
